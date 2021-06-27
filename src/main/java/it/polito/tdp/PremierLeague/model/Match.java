@@ -90,5 +90,12 @@ public class Match {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "[" + matchID + "]";
+	}
+	
+	
 	
 }

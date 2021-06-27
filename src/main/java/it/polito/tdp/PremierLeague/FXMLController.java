@@ -5,9 +5,12 @@
 package it.polito.tdp.PremierLeague;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import it.polito.tdp.PremierLeague.model.Model;
+import it.polito.tdp.PremierLeague.model.Player;
+import it.polito.tdp.PremierLeague.model.Sconfitti;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -44,17 +47,48 @@ public class FXMLController {
 
     @FXML
     void doCreaGrafo(ActionEvent event) {
+    	txtResult.clear();
+    	Double x = null;
+    	try {
+    		x = Double.parseDouble(txtGoals.getText());
+    	} catch (NumberFormatException e) {
+    		txtResult.appendText("Inserire un numero minimo di goal nel formato corretto");
+    		return;
+    	}
+    	this.model.creaGrafo(x);
+    	txtResult.appendText("Grafo creato\n");
+    	txtResult.appendText("# VERTICI: " + this.model.getNumeroVertici()+ "\n");
+    	txtResult.appendText("# ARCHI: " + this.model.getNumeroArchi());
 
     }
 
     @FXML
     void doDreamTeam(ActionEvent event) {
-
+    	txtResult.clear();
+    	String s=txtK.getText();
+    	model.run(Integer.parseInt(s));
+    	String ss="GRADO: "+model.getGrado()+"\n";
+    	for (Player p:model.getDreamTeam()) {
+    		ss+=p.toString()+"\n";
+    	}
+        txtResult.setText(ss);
     }
 
     @FXML
     void doTopPlayer(ActionEvent event) {
-
+    	txtResult.clear();
+    	List<Sconfitti> sconfitti=this.model.topPlayer();
+    	Player topPlayer = this.model.getTop();
+    	if(topPlayer == null) {
+    		txtResult.appendText("Crea il grafo!");
+    		return;
+    	}
+    	String s="";
+    	for (Sconfitti ss:sconfitti) {
+    		s+=ss.getP().toString()+"\n";
+    	}
+    	txtResult.appendText("TOP PLAYER: " + topPlayer.toString());
+    	txtResult.appendText("\n\nAVVERSARI BATTUTI:\n"+s);
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
